@@ -1,0 +1,23 @@
+//Data needed for these operations is required in the body of the request, unless it's seen in the URI for this.
+
+
+CREATE/post
+http://localhost:5000/api/employees                 //Add employee
+http://localhost:5000/api/createShift               //add shifts
+
+
+READ/get
+http://localhost:5000/api/employees                 //view all employees
+http://localhost:5000/api/shifts                    //view all shifts
+                     /api/shifts?employeeID=1       //view shifts for a specific employee (replace the 1 with an appropriate ID).
+
+
+
+
+UPDATE/put
+http://localhost:5000/api/shifts/1                  //update a shift. replace 1 with the shift id.
+http://localhost:5000/api/employees/1               //update an employee. replace 1 with the employee id.
+
+DELETE/delete
+http://localhost:5000/api/deleteShift               //delete a shift by id
+http://localhost:5000/api/deleteEmployee            //delete an employee by id

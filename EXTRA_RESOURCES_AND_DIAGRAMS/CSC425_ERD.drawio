@@ -1,0 +1,58 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36" version="24.8.3">
+  <diagram name="Page-1" id="6XgxonXH2TrhGqHr0vvf">
+    <mxGraphModel dx="910" dy="546" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-19" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=ERzeroToMany;endFill=0;startArrow=ERone;startFill=0;" parent="1" source="Hi8Xjqae67IuLqTUKgLO-1" target="Hi8Xjqae67IuLqTUKgLO-17" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-33" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=ERzeroToOne;endFill=0;startArrow=ERone;startFill=0;" parent="1" source="Hi8Xjqae67IuLqTUKgLO-1" target="Hi8Xjqae67IuLqTUKgLO-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="130" y="240" />
+              <mxPoint x="90" y="240" />
+              <mxPoint x="90" y="428" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-1" value="Employee" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="129.94" y="210" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-2" value="EmployeeID(PK)&lt;div&gt;EmployeeName&lt;/div&gt;&lt;div&gt;.EmpFName&lt;/div&gt;&lt;div&gt;.EmpLName&lt;/div&gt;&lt;div&gt;isVolunteer&lt;/div&gt;&lt;div&gt;EmployeeEmail&lt;/div&gt;&lt;div&gt;EmployeePhone&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="Hi8Xjqae67IuLqTUKgLO-1" vertex="1">
+          <mxGeometry y="50" width="160" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-3" value="Admin" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="129.94" y="400" width="160" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-4" value="AdminID(PK)&lt;div&gt;AdminLoginName&lt;br&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;EmployeeID(FK)&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="Hi8Xjqae67IuLqTUKgLO-3" vertex="1">
+          <mxGeometry y="50" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-21" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=ERone;endFill=0;startArrow=ERone;startFill=0;" parent="1" source="Hi8Xjqae67IuLqTUKgLO-5" target="Hi8Xjqae67IuLqTUKgLO-18" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-5" value="Shift" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="345" y="210" width="160" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-6" value="ShiftID(PK)&lt;div&gt;ShiftStartTime&lt;/div&gt;&lt;div&gt;ShiftEndTime&lt;/div&gt;&lt;div&gt;ClockInTime&lt;/div&gt;&lt;div&gt;ClockOutTime&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="Hi8Xjqae67IuLqTUKgLO-5" vertex="1">
+          <mxGeometry y="50" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-22" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;" parent="1" source="Hi8Xjqae67IuLqTUKgLO-7" target="Hi8Xjqae67IuLqTUKgLO-17" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-7" value="Team" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="560" y="210" width="160" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-8" value="TeamID(PK)&lt;div&gt;TeamName&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="Hi8Xjqae67IuLqTUKgLO-7" vertex="1">
+          <mxGeometry y="50" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-17" value="EmployeeTeamShiftAssociative" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontColor=default;labelBackgroundColor=default;" parent="1" vertex="1">
+          <mxGeometry x="310" y="30" width="230" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-18" value="ShiftID(PK,FK)&lt;div&gt;EmployeeID(FK)&lt;/div&gt;&lt;div&gt;TeamID(FK)&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;fontFamily=Helvetica;fontColor=default;labelBackgroundColor=default;" parent="Hi8Xjqae67IuLqTUKgLO-17" vertex="1">
+          <mxGeometry y="50" width="230" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

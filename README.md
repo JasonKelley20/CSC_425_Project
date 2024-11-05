@@ -1,8 +1,4 @@
-# React + Vite
+CSC 425 Final Project
+Jason Kelley
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This Project is meant to be the base of an Employee/Volunteer management system for nonprofits and emergency response teams. This project is intended to be able to be added onto later and will not immediately be ready for actual use as more user requirements will need to be added later.

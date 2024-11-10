@@ -15,6 +15,15 @@ async function dropTables(){
         }
         });
 
+        db.run(`DROP TABLE IF EXISTS Users;`
+            , (err) => {
+            if (err) {
+                console.error('Error DROPING Users table:', err.message);
+            } else {
+                console.log('Users table DROPED successfully');
+            }
+            });
+
         db.run(`DROP TABLE IF EXISTS Employees;`
         , (err) => {
         if (err) {

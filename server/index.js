@@ -3,12 +3,18 @@ const express = require('express');
 const app = express();
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
+const bcrypt = require('bcrypt');
+const saltRounds = 10; 
+const jwt = require('jsonwebtoken');
+const secretKey = 'secret_key'; //store somewhere else and change later.
+const { authenticateToken, authenticateAdmin } = require('./authenticateToken.js');
+
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Database setup
+// Database setups
 const db = new sqlite3.Database('./mydb.sqlite', (err) => {
     if (err) {
     console.error('Error opening database:', err.message);
@@ -17,21 +23,68 @@ const db = new sqlite3.Database('./mydb.sqlite', (err) => {
     }
 });
 
-// Example API endpoint
-/*
-app.get('/api/jobs', (req, res) => {
-    db.all('SELECT * FROM jobs', [], (err, rows) => {
-    if (err) {
-        res.status(400).json({ error: err.message });
-        return;
+app.post('/api/register', async (req, res) => {
+    const { username, password, role } = req.body;
+    const acceptableRoles = ['admin', 'user'];
+
+    if(!username || !password){
+        return res.status(400).json({error: "Username and Password are required."});
     }
-    res.json({ data: rows });
-    });
+    if(role && !(acceptableRoles.includes(role))){
+        return res.status(400).json({error: "role not acceptable"});
+    }
+
+    try{
+        const passwordHash = await bcrypt.hash(password, saltRounds);
+        const query = 'INSERT INTO Users (username, passwordHash, role) VALUES (?,?,?)';
+        const params = [username, passwordHash, role || 'user'];
+
+        db.run(query, params, (err) => {
+            if(err) {
+                if(err.message.includes("UNIQUE constraint failed")) {
+                    return res.status(400).json({error: "Username already exists."});
+                }
+                return res.status(500).json({error: err.message});
+            }
+            res.json({message: "User registed successfully", userID: this.lastID});
+        })
+    } catch (error) {
+        res.status(500).json("Error hashing password.");
+    }
 });
-*/
+
+app.post('/api/login', (req, res) => {
+    const {username, password} = req.body;
+
+    if(!username || !password){
+        res.status(400).json({error: "username and password required."});
+    }
+
+    const query = 'SELECT * FROM Users WHERE username = ?';
+    db.get(query, [username], async (err, user) => {
+        if(err){
+            return res.status(500).json({message: err.message});
+        }
+        if(!user){
+            return res.status(400).json({error: "Invalid username or password"});
+        }
+
+        const passwordsMatch = await bcrypt.compare(password, user.passwordHash);
+        if(!passwordsMatch){
+            return res.status(400).json({error: "Invalid username or password."});
+        }
+
+        const token = jwt.sign(
+            { userId: user.id, role: user.role},
+            secretKey
+        );
+
+        res.json({message: "Login Successful", token});
+    })
+});
 
 //view all existing shifts, or search for shifts by employee
-app.get('/api/shifts', (req, res) => {
+app.get('/api/shifts', authenticateToken, (req, res) => {
     const { employeeID } = req.query;
 
     // Base query for fetching shifts
@@ -71,7 +124,7 @@ app.get('/api/shifts', (req, res) => {
 });
 
 //view all existing employees
-app.get('/api/employees', (req, res) => {
+app.get('/api/employees', authenticateAdmin, (req, res) => {
     db.all('SELECT * FROM Employees', [], (err, rows) => {
     if (err) {
         res.status(400).json({ error: err.message });
@@ -82,7 +135,7 @@ app.get('/api/employees', (req, res) => {
 });
 
 //create a new employee in the database
-app.post('/api/employees', (req, res) => {
+app.post('/api/employees', authenticateAdmin, (req, res) => {
     const { employeeFName, employeeLName } = req.body;
     const query = 'INSERT INTO Employees (employeeFName, employeeLName) VALUES (?,?)';
     const params = [employeeFName, employeeLName];
@@ -100,7 +153,7 @@ app.post('/api/employees', (req, res) => {
 });
 
 //create a new shift and link it in the EmployeeTeamShiftAssociative table
-app.post('/api/createShift', (req, res) => {
+app.post('/api/createShift', authenticateAdmin, (req, res) => {
     const { employeeID, shiftStartTime, shiftEndTime, clockInTime, clockOutTime, teamID } = req.body;
 
     // Validate that employeeID, shiftStartTime, and shiftEndTime are provided
@@ -155,7 +208,7 @@ app.post('/api/createShift', (req, res) => {
 });
 
 //Update an existing shift
-app.put('/api/shifts/:shiftID', (req, res) => {
+app.put('/api/shifts/:shiftID', authenticateToken, (req, res) => {
     const { shiftID } = req.params;
     const { shiftStartTime, shiftEndTime, clockInTime, clockOutTime } = req.body;
 
@@ -205,7 +258,7 @@ app.put('/api/shifts/:shiftID', (req, res) => {
 
 
 //Update an existing Employee
-app.put('/api/employees/:employeeID', (req, res) => {
+app.put('/api/employees/:employeeID', authenticateAdmin, (req, res) => {
     const { employeeID } = req.params;
     const { employeeFName, employeeLName } = req.body;
 
@@ -248,7 +301,7 @@ app.put('/api/employees/:employeeID', (req, res) => {
     });
 });
 
-app.delete('/api/deleteShift', (req, res) => {
+app.delete('/api/deleteShift', authenticateAdmin, (req, res) => {
     const { shiftID } = req.body;
 
     // Validate that shiftID was provided
@@ -293,7 +346,7 @@ app.delete('/api/deleteShift', (req, res) => {
 });
 
 
-app.delete('/api/deleteEmployee', (req, res) => {
+app.delete('/api/deleteEmployee', authenticateAdmin, (req, res) => {
     const { employeeID } = req.body;
 
     // Validate that shiftID was provided

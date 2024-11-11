@@ -23,6 +23,7 @@ const db = new sqlite3.Database('./mydb.sqlite', (err) => {
     }
 });
 
+//register a new user. users can register themselves, but existing admins must register other admins.
 app.post('/api/register', async (req, res) => {
     const { username, password, role } = req.body;
     const acceptableRoles = ['admin', 'user'];
@@ -33,7 +34,28 @@ app.post('/api/register', async (req, res) => {
     if(role && !(acceptableRoles.includes(role))){
         return res.status(400).json({error: "role not acceptable"});
     }
+    //if the user is trying to register as an admin, an admin will have to approve - an admin JWT must be passed as well.
+    if(role === 'Admin' || role === 'admin'){
+        let userToken;
+        const token = req.headers['authorization']?.split(' ')[1];
+        if(!token) {
+            return res.status(400).json({error: "Bad Token. Admin priveledges required to register a new admin account"});
+        }
 
+        jwt.verify(token, secretKey, (err, user) => {
+            if(err){
+                return res.status(403).json({error: "Bad Token. Admin priveledges required to register a new admin account"});
+            }
+            req.user = user;
+            userToken = user;
+        });
+        if(!userToken.role || userToken.role !== 'Admin'){
+            return res.status(400).json({error: "Admin priveledges required to register a new admin account"});
+        }
+
+    }
+
+    //attempt to add the new user to the database
     try{
         const passwordHash = await bcrypt.hash(password, saltRounds);
         const query = 'INSERT INTO Users (username, passwordHash, role) VALUES (?,?,?)';
@@ -53,6 +75,7 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
+//either a user or an admin can use this. The JWT will sign with their role though.
 app.post('/api/login', (req, res) => {
     const {username, password} = req.body;
 
@@ -83,7 +106,7 @@ app.post('/api/login', (req, res) => {
     })
 });
 
-//view all existing shifts, or search for shifts by employee
+//view all existing shifts, or search for shifts by employee. Admins only.
 app.get('/api/shifts', authenticateAdmin, (req, res) => {
     const { employeeID } = req.query;
 
@@ -123,6 +146,7 @@ app.get('/api/shifts', authenticateAdmin, (req, res) => {
     });
 });
 
+//endpoint for employees to view their shifts.
 app.get('/api/my_shifts', authenticateToken, (req, res) => {
     const userId = req.user.userId;  // Get employee ID from token
 
@@ -154,7 +178,7 @@ app.get('/api/my_shifts', authenticateToken, (req, res) => {
 });
 
 
-//view all existing employees
+//view all existing employees. admin only.
 app.get('/api/employees', authenticateAdmin, (req, res) => {
     db.all('SELECT * FROM Employees', [], (err, rows) => {
     if (err) {
@@ -165,7 +189,7 @@ app.get('/api/employees', authenticateAdmin, (req, res) => {
     });
 });
 
-//create a new employee in the database
+//create a new employee in the database. admin access.
 app.post('/api/employees', authenticateAdmin, (req, res) => {
     const { employeeFName, employeeLName } = req.body;
     const query = 'INSERT INTO Employees (employeeFName, employeeLName) VALUES (?,?)';
@@ -183,7 +207,7 @@ app.post('/api/employees', authenticateAdmin, (req, res) => {
     });
 });
 
-//create a new shift and link it in the EmployeeTeamShiftAssociative table
+//create a new shift and link it in the EmployeeTeamShiftAssociative table. admin only.
 app.post('/api/createShift', authenticateAdmin, (req, res) => {
     const { employeeID, shiftStartTime, shiftEndTime, clockInTime, clockOutTime, teamID } = req.body;
 
@@ -238,8 +262,8 @@ app.post('/api/createShift', authenticateAdmin, (req, res) => {
     });
 });
 
-//Update an existing shift
-app.put('/api/shifts/:shiftID', authenticateToken, (req, res) => {
+//Update an existing shift. admin only.
+app.put('/api/shifts/:shiftID', authenticateAdmin, (req, res) => {
     const { shiftID } = req.params;
     const { shiftStartTime, shiftEndTime, clockInTime, clockOutTime } = req.body;
 
@@ -288,7 +312,7 @@ app.put('/api/shifts/:shiftID', authenticateToken, (req, res) => {
 });
 
 
-//Update an existing Employee
+//Update an existing Employee. Admin access.
 app.put('/api/employees/:employeeID', authenticateAdmin, (req, res) => {
     const { employeeID } = req.params;
     const { employeeFName, employeeLName } = req.body;
@@ -332,6 +356,7 @@ app.put('/api/employees/:employeeID', authenticateAdmin, (req, res) => {
     });
 });
 
+//Remove a shift. Admin Access.
 app.delete('/api/deleteShift', authenticateAdmin, (req, res) => {
     const { shiftID } = req.body;
 
@@ -376,7 +401,7 @@ app.delete('/api/deleteShift', authenticateAdmin, (req, res) => {
     });   
 });
 
-
+//delete an employee from db. Admin access.
 app.delete('/api/deleteEmployee', authenticateAdmin, (req, res) => {
     const { employeeID } = req.body;
 

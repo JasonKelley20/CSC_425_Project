@@ -84,7 +84,7 @@ app.post('/api/login', (req, res) => {
 });
 
 //view all existing shifts, or search for shifts by employee
-app.get('/api/shifts', authenticateToken, (req, res) => {
+app.get('/api/shifts', authenticateAdmin, (req, res) => {
     const { employeeID } = req.query;
 
     // Base query for fetching shifts
@@ -122,6 +122,37 @@ app.get('/api/shifts', authenticateToken, (req, res) => {
         res.json({ data: rows });
     });
 });
+
+app.get('/api/my_shifts', authenticateToken, (req, res) => {
+    const userId = req.user.userId;  // Get employee ID from token
+
+    const query = `
+        SELECT 
+            EmployeeTeamShiftAssociative.shiftID,
+            Employees.id AS employeeID,
+            Employees.employeeFName,
+            Employees.employeeLName,
+            Shifts.shiftStartTime,
+            Shifts.shiftEndTime,
+            Shifts.clockInTime,
+            Shifts.clockOutTime,
+            Teams.id AS teamID,
+            Teams.teamName
+        FROM EmployeeTeamShiftAssociative
+        JOIN Employees ON Employees.id = EmployeeTeamShiftAssociative.employeeID
+        JOIN Shifts ON Shifts.id = EmployeeTeamShiftAssociative.shiftID
+        LEFT JOIN Teams ON Teams.id = EmployeeTeamShiftAssociative.teamID
+        WHERE Employees.id = ?
+    `;
+
+    db.all(query, [userId], (err, rows) => {
+        if (err) {
+            return res.status(400).json({ error: err.message });
+        }
+        res.json({ data: rows });
+    });
+});
+
 
 //view all existing employees
 app.get('/api/employees', authenticateAdmin, (req, res) => {

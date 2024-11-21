@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36" version="24.8.3">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="24.8.6">
   <diagram name="Page-1" id="6XgxonXH2TrhGqHr0vvf">
-    <mxGraphModel dx="910" dy="546" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1050" dy="618" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -8,13 +8,13 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Hi8Xjqae67IuLqTUKgLO-1" value="Employee" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="129.94" y="210" width="160" height="160" as="geometry" />
+          <mxGeometry x="129.94" y="210" width="160" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="Hi8Xjqae67IuLqTUKgLO-2" value="id(PK)&lt;div&gt;EmployeeName&lt;/div&gt;&lt;div&gt;.EmpFName&lt;/div&gt;&lt;div&gt;.EmpLName&lt;/div&gt;&lt;div&gt;isVolunteer&lt;/div&gt;&lt;div&gt;EmployeeEmail&lt;/div&gt;&lt;div&gt;EmployeePhone&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="Hi8Xjqae67IuLqTUKgLO-1" vertex="1">
-          <mxGeometry y="50" width="160" height="110" as="geometry" />
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-2" value="id(PK)&lt;div&gt;EmployeeName&lt;/div&gt;&lt;div&gt;.EmpFName&lt;/div&gt;&lt;div&gt;.EmpLName&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="Hi8Xjqae67IuLqTUKgLO-1" vertex="1">
+          <mxGeometry y="50" width="160" height="70" as="geometry" />
         </mxCell>
         <mxCell id="Hi8Xjqae67IuLqTUKgLO-3" value="Users" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="129.94" y="400" width="160" height="130" as="geometry" />
+          <mxGeometry x="129.94" y="370" width="160" height="130" as="geometry" />
         </mxCell>
         <mxCell id="Hi8Xjqae67IuLqTUKgLO-4" value="id(PK)&lt;div&gt;username&lt;/div&gt;&lt;div&gt;passwordHash&lt;/div&gt;&lt;div&gt;Role&lt;/div&gt;&lt;div&gt;EmployeeID(FK)&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="Hi8Xjqae67IuLqTUKgLO-3" vertex="1">
           <mxGeometry y="50" width="160" height="80" as="geometry" />
@@ -37,18 +37,19 @@
         <mxCell id="Hi8Xjqae67IuLqTUKgLO-8" value="id(PK)&lt;div&gt;TeamName&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="Hi8Xjqae67IuLqTUKgLO-7" vertex="1">
           <mxGeometry y="50" width="160" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="Hi8Xjqae67IuLqTUKgLO-17" value="EmployeeTeamShiftAssociative" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontColor=default;labelBackgroundColor=default;" parent="1" vertex="1">
-          <mxGeometry x="310" y="30" width="230" height="110" as="geometry" />
+        <mxCell id="Hi8Xjqae67IuLqTUKgLO-17" value="Associative" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontColor=default;labelBackgroundColor=default;" parent="1" vertex="1">
+          <mxGeometry x="355" y="30" width="140" height="110" as="geometry" />
         </mxCell>
         <mxCell id="Hi8Xjqae67IuLqTUKgLO-18" value="ShiftID(PK,FK)&lt;div&gt;EmployeeID(FK)&lt;/div&gt;&lt;div&gt;TeamID(FK)&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;fontFamily=Helvetica;fontColor=default;labelBackgroundColor=default;" parent="Hi8Xjqae67IuLqTUKgLO-17" vertex="1">
-          <mxGeometry y="50" width="230" height="60" as="geometry" />
+          <mxGeometry y="50" width="140" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="KsrT1c54k6n7T4vB-0az-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;startArrow=ERmandOne;startFill=0;endArrow=ERmandOne;endFill=0;" edge="1" parent="1" source="Hi8Xjqae67IuLqTUKgLO-4" target="Hi8Xjqae67IuLqTUKgLO-2">
+        <mxCell id="KsrT1c54k6n7T4vB-0az-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0;entryDx=0;entryDy=0;startArrow=ERmandOne;startFill=0;endArrow=ERmandOne;endFill=0;exitX=0;exitY=0;exitDx=0;exitDy=0;" parent="1" source="Hi8Xjqae67IuLqTUKgLO-4" target="Hi8Xjqae67IuLqTUKgLO-2" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="70" y="450" />
+              <mxPoint x="70" y="420" />
               <mxPoint x="70" y="260" />
             </Array>
+            <mxPoint x="50" y="430" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
       </root>

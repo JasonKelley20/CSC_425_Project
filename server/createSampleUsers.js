@@ -29,7 +29,7 @@ async function createSampleUsers(){
                 for(let employee of employees){
                     const passwordHash = await hashPassword(samplePassword);
                     const username = `${employee.employeeFName[0]}${employee.employeeLName}`.toLowerCase();
-                    const role = employee.id === 1 ? 'Admin' : 'user';
+                    const role = employee.id === 1 ? 'Admin' : 'User';
 
                     db.run(`INSERT INTO Users (username, passwordHash, role, employeeID) VALUES (?,?,?,?)`, [username, passwordHash, role, employee.id], (err) => {
                         if(err) {

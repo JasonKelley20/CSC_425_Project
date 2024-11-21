@@ -42,12 +42,12 @@ async function dropTables(){
         }
         });
 
-        db.run(`DROP TABLE IF EXISTS EmployeeTeamShiftAssociative;`
+        db.run(`DROP TABLE IF EXISTS Associative;`
         , (err) => {
         if (err) {
-            console.error('Error DROPING EmployeeTeamShiftAssociative table:', err.message);
+            console.error('Error DROPING Associative table:', err.message);
         } else {
-            console.log('EmployeeTeamShiftAssociative table DROPED successfully');
+            console.log('Associative table DROPED successfully');
         }
         });
 

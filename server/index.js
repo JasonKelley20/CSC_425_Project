@@ -25,8 +25,8 @@ const db = new sqlite3.Database('./mydb.sqlite', (err) => {
 
 //register a new user. users can register themselves, but existing admins must register other admins.
 app.post('/api/register', async (req, res) => {
-    const { username, password, role } = req.body;
-    const acceptableRoles = ['admin', 'user'];
+    const { username, password, role, employeeFName, employeeLName } = req.body;
+    const acceptableRoles = ['Admin', 'User'];
 
     if(!username || !password){
         return res.status(400).json({error: "Username and Password are required."});
@@ -35,13 +35,13 @@ app.post('/api/register', async (req, res) => {
         return res.status(400).json({error: "role not acceptable"});
     }
     //if the user is trying to register as an admin, an admin will have to approve - an admin JWT must be passed as well.
-    if(role === 'Admin' || role === 'admin'){
+    if(role === 'Admin'){
         let userToken;
         const token = req.headers['authorization']?.split(' ')[1];
         if(!token) {
             return res.status(400).json({error: "Bad Token. Admin priveledges required to register a new admin account"});
         }
-
+        
         jwt.verify(token, secretKey, (err, user) => {
             if(err){
                 return res.status(403).json({error: "Bad Token. Admin priveledges required to register a new admin account"});
@@ -58,21 +58,56 @@ app.post('/api/register', async (req, res) => {
     //attempt to add the new user to the database
     try{
         const passwordHash = await bcrypt.hash(password, saltRounds);
-        const query = 'INSERT INTO Users (username, passwordHash, role) VALUES (?,?,?)';
-        const params = [username, passwordHash, role || 'user'];
 
-        db.run(query, params, (err) => {
-            if(err) {
-                if(err.message.includes("UNIQUE constraint failed")) {
-                    return res.status(400).json({error: "Username already exists."});
+        db.serialize(()=>{
+            db.run("BEGIN TRANSACTION");
+
+            let employeeID = null;
+            const employeeQuery = `INSERT INTO Employees (employeeFName, employeeLName) VALUES (?,?)`;
+            let employeeParams = [];
+            
+
+            employeeParams.push(employeeFName || 'null');
+            employeeParams.push(employeeLName || 'null');
+
+            db.run(employeeQuery, employeeParams, function(err){
+                if(err){
+                    db.run('ROLLBACK');
+                    return res.status(500).json({error: 'error registering: ' + err.message});
                 }
-                return res.status(500).json({error: err.message});
-            }
-            res.json({message: "User registed successfully", userID: this.lastID});
-        })
+                employeeID = this.lastID;
+            });
+
+            const userQuery = `INSERT INTO Users (username, passwordHash, role, employeeID) VALUES (?,?,?,?)`;
+            const userParams = [username, passwordHash, role || 'User', employeeID];
+
+            db.run(userQuery, userParams, function(err){
+                if(err){
+                    db.run('ROLLBACK');
+                    if(err.message.includes("UNIQUE constraint failed")){
+                        return res.status(400).json({error:"Username already exists."})
+                    }
+                    return res.status(500).json({error: "Error adding user: " + err.message});
+                }
+
+                db.run("COMMIT", (err) => {
+                    if(err){
+                        return res.status(500).json({error: "Error committing transaction: " + err.message});
+                    }
+                    res.json({
+                        message: "User registered successfully",
+                        userID: this.lastID,
+                        employeeID: employeeID
+                    })
+                });
+            });
+
+
+        });
     } catch (error) {
         res.status(500).json("Error hashing password.");
     }
+    
 });
 
 //either a user or an admin can use this. The JWT will sign with their role though.
@@ -99,7 +134,8 @@ app.post('/api/login', (req, res) => {
 
         const token = jwt.sign(
             { userId: user.id, role: user.role},
-            secretKey
+            secretKey,
+            {expiresIn: '90d'}
         );
 
         res.json({message: "Login Successful", token});
@@ -113,7 +149,7 @@ app.get('/api/shifts', authenticateAdmin, (req, res) => {
     // Base query for fetching shifts
     let query = `
         SELECT 
-            EmployeeTeamShiftAssociative.shiftID,
+            Associative.shiftID,
             Employees.id AS employeeID,
             Employees.employeeFName,
             Employees.employeeLName,
@@ -123,10 +159,11 @@ app.get('/api/shifts', authenticateAdmin, (req, res) => {
             Shifts.clockOutTime,
             Teams.id AS teamID,
             Teams.teamName
-        FROM EmployeeTeamShiftAssociative
-        JOIN Employees ON Employees.id = EmployeeTeamShiftAssociative.employeeID
-        JOIN Shifts ON Shifts.id = EmployeeTeamShiftAssociative.shiftID
-        LEFT JOIN Teams ON Teams.id = EmployeeTeamShiftAssociative.teamID
+        FROM Associative
+        JOIN Employees ON Employees.id = Associative.employeeID
+        JOIN Shifts ON Shifts.id = Associative.shiftID
+        LEFT JOIN Teams ON Teams.id = Associative.teamID
+        ORDER BY Shifts.shiftStartTime ASC
     `;
 
     const params = [];
@@ -152,7 +189,7 @@ app.get('/api/my_shifts', authenticateToken, (req, res) => {
 
     const query = `
         SELECT 
-            EmployeeTeamShiftAssociative.shiftID,
+            Associative.shiftID,
             Employees.id AS employeeID,
             Employees.employeeFName,
             Employees.employeeLName,
@@ -162,11 +199,12 @@ app.get('/api/my_shifts', authenticateToken, (req, res) => {
             Shifts.clockOutTime,
             Teams.id AS teamID,
             Teams.teamName
-        FROM EmployeeTeamShiftAssociative
-        JOIN Employees ON Employees.id = EmployeeTeamShiftAssociative.employeeID
-        JOIN Shifts ON Shifts.id = EmployeeTeamShiftAssociative.shiftID
-        LEFT JOIN Teams ON Teams.id = EmployeeTeamShiftAssociative.teamID
+        FROM Associative
+        JOIN Employees ON Employees.id = Associative.employeeID
+        JOIN Shifts ON Shifts.id = Associative.shiftID
+        LEFT JOIN Teams ON Teams.id = Associative.teamID
         WHERE Employees.id = ?
+        ORDER BY Shifts.shiftStartTime ASC
     `;
 
     db.all(query, [userId], (err, rows) => {
@@ -207,7 +245,7 @@ app.post('/api/employees', authenticateAdmin, (req, res) => {
     });
 });
 
-//create a new shift and link it in the EmployeeTeamShiftAssociative table. admin only.
+//create a new shift and link it in the Associative table. admin only.
 app.post('/api/createShift', authenticateAdmin, (req, res) => {
     const { employeeID, shiftStartTime, shiftEndTime, clockInTime, clockOutTime, teamID } = req.body;
 
@@ -233,9 +271,9 @@ app.post('/api/createShift', authenticateAdmin, (req, res) => {
         // Get the new shiftID of the inserted shift
         const newShiftID = this.lastID;
 
-        // Insert into EmployeeTeamShiftAssociative table
+        // Insert into Associative table
         const assignShiftQuery = `
-            INSERT INTO EmployeeTeamShiftAssociative (shiftID, employeeID, teamID) 
+            INSERT INTO Associative (shiftID, employeeID, teamID) 
             VALUES (?, ?, ?)
         `;
         const assignParams = [newShiftID, employeeID, teamID || null];
@@ -366,7 +404,7 @@ app.delete('/api/deleteShift', authenticateAdmin, (req, res) => {
         return;
     }
 
-    const deleteShiftQueryAssociative = `DELETE FROM EmployeeTeamShiftAssociative WHERE shiftId = ? `; 
+    const deleteShiftQueryAssociative = `DELETE FROM Associative WHERE shiftId = ? `; 
     const associativeParams = [];
     associativeParams.push(shiftID);
 
@@ -412,10 +450,10 @@ app.delete('/api/deleteEmployee', authenticateAdmin, (req, res) => {
     }
 
     db.serialize(() => {
-        //The shift entries for the employee will also be deleted from the EmployeeTeamShiftAssociative Table and the Shifts Table.
+        //The shift entries for the employee will also be deleted from the Associative Table and the Shifts Table.
         //This gets that info for later.
         //STEP 1: get needed shiftIDs
-        const getShiftIDsQuery = `SELECT shiftID FROM EmployeeTeamShiftAssociative WHERE employeeID = ?`;
+        const getShiftIDsQuery = `SELECT shiftID FROM Associative WHERE employeeID = ?`;
 
         db.all(getShiftIDsQuery, [employeeID], (err, rows) => {
             if (err) {
@@ -428,8 +466,8 @@ app.delete('/api/deleteEmployee', authenticateAdmin, (req, res) => {
             //apparently enforces that all of the deletions happen, or none do.
             db.run("BEGIN TRANSACTION");
 
-            //STEP 2: Delete from EmployeeTeamShiftAssociative
-            const deleteAssociativeQuery = `DELETE FROM EmployeeTeamShiftAssociative WHERE employeeID = ?`;
+            //STEP 2: Delete from Associative
+            const deleteAssociativeQuery = `DELETE FROM Associative WHERE employeeID = ?`;
             db.run(deleteAssociativeQuery, [employeeID], function (err) {
                 if(err) {
                     db.run("ROLLBACK"); //this is a part of everything being a part of a transaction: stops all deletes if there is an error anywhere.
@@ -532,6 +570,23 @@ app.delete('/api/deleteEmployee', authenticateAdmin, (req, res) => {
         }
     });  
     */ 
+});
+
+
+
+app.post('/api/verifyUser', (req, res) => {
+    const token = req.body.token;
+
+    if(!token){
+        return res.status(400).json({error: 'token is required.'});
+    }
+
+    try {
+        const decoded = jwt.verify(token, secretKey);
+        res.json({valid: true, user: decoded});
+    } catch (err){
+        res.status(401).json({valid: false, error: "Invalid or expired token."});
+    }
 });
 
 

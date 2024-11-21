@@ -17,7 +17,7 @@ function runQuery(query){
 
 async function initializeTables(){
     try{
-        //Create the tables: Employees, Admins, Shifts, Teams, and the Associative Entity EmployeeTeamShiftAssociative
+        //Create the tables: Employees, Admins, Shifts, Teams, and the Associative Entity Associative
         await runQuery(`CREATE TABLE IF NOT EXISTS Employees (
             id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             employeeFName TEXT,
@@ -67,7 +67,7 @@ async function initializeTables(){
             )`);
         console.log('Teams table created successfully');
 
-        await runQuery(`CREATE TABLE IF NOT EXISTS EmployeeTeamShiftAssociative (
+        await runQuery(`CREATE TABLE IF NOT EXISTS Associative (
             shiftID INTEGER PRIMARY KEY NOT NULL, 
             employeeID INTEGER NOT NULL,
             teamID INTEGER,
@@ -75,7 +75,7 @@ async function initializeTables(){
             FOREIGN KEY (employeeID) REFERENCES Employees(id),
             FOREIGN KEY (teamID) REFERENCES Teams(id)
             )`);
-        console.log('EmployeeTeamShiftAssociative table created successfully');
+        console.log('Associative table created successfully');
 
         // Insert samples     
         await runQuery(`INSERT INTO Employees (employeeFName, employeeLName) VALUES 
@@ -102,23 +102,23 @@ async function initializeTables(){
         `);
         await runQuery(`INSERT INTO Shifts (shiftStartTime, shiftEndTime, clockInTime, clockOutTime) VALUES 
             ('2024-10-31 08:00:00', '2024-10-31 16:00:00', '2024-10-31 08:01:23', ''),
-            ('2024-10-31 08:00:00', '2024-10-31 16:00:00', '2024-10-31 07:58:43', ''),
+            ('2024-10-30 08:00:00', '2024-10-30 16:00:00', '2024-10-30 07:58:43', ''),
             ('2025-12-01 12:00:00', '2025-12-01 16:00:00', '', ''),
             ('2025-01-03 11:00:00', '2024-10-31 23:00:00', '', ''),
             ('2024-10-15 08:00:00', '2024-10-15 18:00:00', '2024-10-15 07:59:23', '2024-10-15 18:09:33'),
-            ('2024-10-31 08:00:00', '2024-10-31 16:00:00', '', ''),
+            ('2024-10-29 08:00:00', '2024-10-29 16:00:00', '', ''),
             ('2024-08-18 08:30:00', '2024-08-18 20:30:00', '2024-08-18 08:30:01', '2024-08-18 20:30:07'),
-            ('2024-09-31 06:00:00', '2024-09-31 18:00:00', '', ''),
+            ('2024-09-29 06:00:00', '2024-09-29 18:00:00', '', ''),
             ('2024-11-01 08:00:00', '2024-11-01 16:00:00', '2024-11-01 08:00:00', ''),
             ('2024-12-31 05:30:00', '2024-12-31 12:30:00', '', ''),
             ('2024-07-13 08:00:00', '2024-07-13 16:00:00', '2024-07-13 08:03:23', '2024-07-13 16:04:52'),
-            ('2024-10-31 08:00:00', '2024-10-31 16:00:00', '', ''),
-            ('2024-10-31 08:00:00', '2024-10-31 16:00:00', '2024-10-31 08:00:00', ''),
-            ('2024-10-31 08:00:00', '2024-10-31 16:00:00', '', ''),
-            ('2024-10-31 08:00:00', '2024-10-31 16:00:00', '2024-10-31 08:01:00', '2024-10-31 16:02:32'),
+            ('2024-10-28 08:00:00', '2024-10-28 16:00:00', '', ''),
+            ('2024-10-27 08:00:00', '2024-10-27 16:00:00', '2024-10-27 08:00:00', ''),
+            ('2024-10-26 08:00:00', '2024-10-26 16:00:00', '', ''),
+            ('2024-10-25 08:00:00', '2024-10-25 16:00:00', '2024-10-25 08:01:00', '2024-10-25 16:02:32'),
             ('2024-10-24 08:30:00', '2024-10-24 16:30:00', '', '')
         `);
-        await runQuery(`INSERT INTO EmployeeTeamShiftAssociative (shiftID, employeeID, teamID) VALUES 
+        await runQuery(`INSERT INTO Associative (shiftID, employeeID, teamID) VALUES 
             (1,1,1),
             (2,2,2),
             (3,3,4),

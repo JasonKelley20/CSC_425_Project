@@ -66,13 +66,23 @@ const MyShiftsCalendar = () => {
         const event = info.event;
         const {title, start, end, extendedProps} = event;
 
+        let clockInTime = (String(new Date(extendedProps?.clockInTime).getHours()).padStart(2, '0') + ':' + String(new Date(extendedProps?.clockInTime).getMinutes()).padStart(2, '0')) || 'N/A';
+        if(clockInTime == 'NaN:NaN'){
+            clockInTime = 'N/A';
+        }
+
+        let clockOutTime = (new Date(extendedProps?.clockOutTime).getTime()) || 'N/A';
+        if(clockOutTime == 'NaN:NaN'){
+            clockOutTime = 'N/A';
+        }
+
         alert(
             `The selected shift is on ${start}. 
             Shift Time: ${title}
             Start Date: ${ ((new Date(extendedProps?.shiftStartTime).getMonth()+1) + "/" + (new Date(extendedProps?.shiftStartTime).getDate())) || 'Unknown'}
             End Date: ${  ((new Date(extendedProps?.shiftEndTime).getMonth()+1) + "/" + (new Date(extendedProps?.shiftEndTime).getDate())) || 'Unknown'}
-            Clock In: ${ (String(new Date(extendedProps?.clockInTime).getHours()).padStart(2, '0') + ':' + String(new Date(extendedProps?.clockInTime).getMinutes()).padStart(2, '0')) || 'N/A'}
-            Clock Out: ${(new Date(extendedProps?.clockOutTime).getTime()) || 'N/A'}
+            Clock In: ${ clockInTime }
+            Clock Out: ${ clockOutTime }
             Team : ${extendedProps?.teamName || 'N/A'}
             ShiftID : ${extendedProps?.shiftId || 'Unknown'}
             `

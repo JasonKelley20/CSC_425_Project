@@ -1,18 +1,35 @@
 import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import { AuthContext } from "../Contexts/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 
 const Navbar = () => {
     const {jwt, login, logout} = useContext(AuthContext);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const JWT_VERIFICATION_LINK = 'http://localhost:5000/api/verifyUser';
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         logout();
     }
+
+    const handleLogin = () => {
+        navigate('/Login');
+    }
+
+    const logoutButton = (
+    <button className="btn btn-outline-danger ml-auto" id="LogoutButton" onClick={handleLogout}>
+        Logout
+    </button>);
+
+    const loginButton = (
+    <button className="btn btn-outline-success ml-auto" id="LoginButton" onClick={handleLogin}>
+        Login
+    </button>
+    );
 
     //This uses a free bootstrap template found at https://getbootstrap.com/docs/4.3/components/navbar/
     const adminNavBar = (
@@ -43,9 +60,7 @@ const Navbar = () => {
                 </li>
                 </ul>   
             </div>
-            <button className="btn btn-outline-danger ml-auto" id="LogoutButton" onClick={handleLogout}>
-                Logout
-            </button>
+            {isLoggedIn? logoutButton : loginButton}
         </nav>);
 
     
@@ -62,15 +77,14 @@ const Navbar = () => {
                 </li>
                 </ul>   
             </div>
-            <button className="btn btn-outline-danger ml-auto" id="LogoutButton" onClick={handleLogout}>
-                Logout
-            </button>
+            {isLoggedIn? logoutButton : loginButton}
         </nav>);
 
     useEffect(()=>{
         const verifyUser = async() => {
             if(!jwt){
                 setIsAdmin(false);
+                setIsLoggedIn(false);
                 return;
             }
 
@@ -79,8 +93,13 @@ const Navbar = () => {
 
                 if(response.data.valid && (response.data.user.role==='admin' || response.data.user.role==='Admin')){
                     setIsAdmin(true);
-                } else {
+                    setIsLoggedIn(true);
+                } else if(response.data?.valid == true) {
                     setIsAdmin(false);
+                    setIsLoggedIn(true);
+                }else{
+                    setIsAdmin(false);
+                    setIsLoggedIn(false);
                 }
             } catch(err){
                 console.error(err.message);

@@ -4,7 +4,7 @@ import MyShiftsCalendar  from '../Components/MyShiftsCalendar.jsx';
 
 const LandingPage = () => {
 
-    return(<div>
+    return(<div className="card">
     
     <h1>Landing Page</h1>
         <MyShiftsCalendar />

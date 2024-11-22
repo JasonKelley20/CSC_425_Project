@@ -1,8 +1,11 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  height:calc(100vh - var(--navbar-height));
+  margin:0 !important;
+  padding:0 !important;
+  display:flex;
+  flex-direction: column;
+  --navbar-height:56px;
 }
 
 .logo {
@@ -40,3 +43,38 @@
 .read-the-docs {
   color: #888;
 }
+
+
+
+html, body{
+  width:100%;
+  height: calc(100% - var(--navbar-height));
+  margin:0;
+  padding:0;
+  padding-top: var(--navbar-height);
+}
+
+.content{
+  flex-grow: 1;
+  overflow: auto;
+  padding: 1rem;
+}
+
+
+.navbar{
+  position: fixed !important;
+  top:0;
+  left:0;
+  width:100%;
+  z-index: 1000;
+  height: var(--navbar-height);
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+
+.gradient-custom {
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9, 121, 84, 1) 35%, rgba(0, 212, 255, 1) 100%);
+}
+
+

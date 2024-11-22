@@ -1,6 +1,6 @@
 import React, {useEffect, useContext} from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../Contexts/AuthContext";
 
 const RegisterPage = () => {
@@ -23,9 +23,11 @@ const RegisterPage = () => {
             });
         }
 
+        /*
         document.getElementById('loginLink').addEventListener('click', ()=>{
             navigate('/Login');
         })
+        */
     }, []);
 
     const Register = async (event) => {
@@ -36,6 +38,11 @@ const RegisterPage = () => {
         const firstName = document.getElementById('firstNameInput').value;
         const lastName = document.getElementById('lastNameInput').value;
 
+        if(!password || !passwordConfirm || !username || !firstName || !lastName){
+            alert('All fields required.');
+            return;
+        }
+        
         if(password !== passwordConfirm){
             console.error('password and password confirmation do not match');
             alert('Your password and password confirmation do not match.')
@@ -73,7 +80,60 @@ const RegisterPage = () => {
         return axios.post(API_PATH, {username, password, role, firstName, lastName});
     }
 
-    return(<>
+    return(
+    
+        <section className="vh-100 gradient-custom">
+        <div className="container-fluid py-5 h-100">
+          <div className="row d-flex justify-content-center align-items-center h-100">
+            <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+              <div className="card bg-dark text-white" style={{borderRadius: "1rem"}}>
+                <div className="card-body p-5 text-center">
+      
+                  <div className="mb-md-5 mt-md-4 pb-5">
+      
+                    <h2 className="fw-bold mb-2 text-uppercase">Register Account</h2>
+                    <p className="text-white-50 mb-5">Please enter your credentials</p>
+      
+                    <div data-mdb-input-init className="form-outline form-white mb-4">
+                      <input type='text' id="usernameInput" className="form-control form-control-lg" required/>
+                      <label className="form-label" htmlFor="usernameInput">Username</label>
+                    </div>
+      
+                    <div data-mdb-input-init className="form-outline form-white mb-4">
+                      <input type="password" id="passwordInput" className="form-control form-control-lg" required/>
+                      <label className="form-label" htmlFor="passwordInput">Password</label>
+                    </div>
+
+                    <div data-mdb-input-init className="form-outline form-white mb-4">
+                      <input type="password" id="passwordConfirm" className="form-control form-control-lg" required/>
+                      <label className="form-label" htmlFor="passwordConfirm">Confirm Password</label>
+                    </div>
+
+                    <div data-mdb-input-init className="form-outline form-white mb-4">
+                      <input type='text' id="firstNameInput" className="form-control form-control-lg" required/>
+                      <label className="form-label" htmlFor="firstNameInput">First Name</label>
+                    </div>
+
+                    <div data-mdb-input-init className="form-outline form-white mb-4">
+                      <input type='text' id="lastNameInput" className="form-control form-control-lg" required/>
+                      <label className="form-label" htmlFor="lastNameInput">Last Name</label>
+                    </div>
+                    <button data-mdb-button-init data-mdb-ripple-init className="btn btn-outline-light btn-lg px-5" type="submit" onClick={Register}>Register</button>      
+                  </div>
+      
+                  <div>
+                    <p className="mb-0">Already have an account? <Link to="/Login" className="text-white-50 fw-bold">Login</Link>
+                    </p>
+                  </div>
+      
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+    /*<>
     <p>Register Page</p>
     <form onSubmit = {Register}>
 
@@ -99,7 +159,10 @@ const RegisterPage = () => {
     </form>
     
     <h4 id='loginLink'>Already have an account? Login</h4>
-    </>);
+    </>
+    
+    
+    */);
 }
 
 

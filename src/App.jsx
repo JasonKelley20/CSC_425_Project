@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import LoginPage from './Screens/LoginPage.jsx';
-import LandingPage from './Screens/LandingPage.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 

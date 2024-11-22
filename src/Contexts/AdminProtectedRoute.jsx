@@ -15,6 +15,7 @@ const AdminProtectedRoute = ({children}) => {
         const verifyToken = async () =>{
             if(!jwt){
                 setIsVerified(false);
+                setIsAdmin(false);
                 return;
             }
 
@@ -34,7 +35,7 @@ const AdminProtectedRoute = ({children}) => {
     }, [jwt, logout]);
 
 
-    if(isVerified === null || isAdmin == null) {
+    if(isVerified == null || isAdmin == null) {
         //would like too eventually add an actual spinner here or something, but i need to get some other stuff done first.
         return <p>Loading . . .</p>;
     } else if(isVerified == true && isAdmin == true){

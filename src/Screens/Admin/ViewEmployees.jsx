@@ -6,9 +6,7 @@ const ViewEmployees = () => {
     const {jwt, login, logout} = useContext(AuthContext);
     const API_ENDPOINT = '';
 
-    useEffect(()=>{
-
-    }, [jwt]);
+   
 
     return('');
 }

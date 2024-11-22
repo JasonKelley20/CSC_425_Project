@@ -5,10 +5,7 @@ import { AuthContext } from "../../Contexts/AuthContext";
 const DeleteShift = () => {
     const {jwt, login, logout} = useContext(AuthContext);
     const API_ENDPOINT = '';
-
-    useEffect(()=>{
-
-    }, [jwt]);
+    
 
     return('');
 }

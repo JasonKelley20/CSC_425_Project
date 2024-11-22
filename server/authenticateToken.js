@@ -19,7 +19,7 @@ function authenticateToken(req, res, next) {
 
 function authenticateAdmin(req, res, next) {
     authenticateToken(req, res, ()=>{
-        if(req.user.role !== 'admin') {
+        if(req.user.role !== 'Admin' && req.user.role !== 'admin') {
             return res.status(403).json({ error: 'Admin privileges required.'});
         }
         next();

@@ -30,8 +30,8 @@ const CreateShift = () => {
         const clockOutTime = document.getElementById("clockOutInput").value;
         const teamID = document.getElementById("teamIDInput").value;
         
-        if(!employeeID){
-            alert('EmployeeID required');
+        if(!employeeID || !startTime || !endTime){
+            alert('EmployeeID, Start Time, and End Time Required');
             return;
         }
         if((startTime!=='' && !testDateFormat(startTime)) || (endTime!=='' && !testDateFormat(endTime)) || (clockInTime!=='' && !testDateFormat(clockInTime)) || (clockOutTime!=='' && !testDateFormat(clockOutTime))){

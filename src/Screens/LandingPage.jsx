@@ -6,7 +6,8 @@ const LandingPage = () => {
 
     return(<div className="card">
     
-    <h1>Landing Page</h1>
+    <h1>Welcome</h1>
+        <br/>
         <MyShiftsCalendar />
     </div>);
 }

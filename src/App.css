@@ -50,7 +50,6 @@ html, body{
   height: calc(100% - var(--navbar-height));
   margin:0;
   padding:0;
-  padding-top: var(--navbar-height);
 }
 
 .content{

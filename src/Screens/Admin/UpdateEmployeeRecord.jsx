@@ -59,27 +59,27 @@ const UpdateEmployeeRecord = () => {
 
     return(
         <div className="registration-form" onSubmit={(event)=>event.preventDefault()}>
-        <form>
-            <h2 className="FormHeader">Update An Employee's Employee Record</h2>
-            <br />
-            <div className="form-icon">
-                <span><i className="icon icon-user"></i></span>
-            </div>
-            <div className="form-group">
-                <input type="text" className="form-control item" id="employeeIDInput" placeholder="EmployeeID" />   
-            </div>
-            <div className="form-group">
-                <input type="text" className="form-control item" id="newFNameInput" placeholder="New First Name OR Leave Blank" />
-            </div>
-            <div className="form-group">
-                <input type="text" className="form-control item" id="newLNameInput" placeholder="New Last Name OR Leave Blank" />
-            </div>
-            <div className="form-group">
-                <button type="button" className="btn btn-block create-account" onClick={updateEmployeeRecordFunction}>Update Employee Account</button>
-            </div>
-        </form>
-    </div>
+            <form>
+                <h2 className="FormHeader">Update An Employee's Employee Record</h2>
+                <br />
+                <div className="form-icon">
+                    <span><i className="icon icon-user"></i></span>
+                </div>
+                <div className="form-group">
+                    <input type="text" className="form-control item" id="employeeIDInput" placeholder="EmployeeID" />   
+                </div>
+                <div className="form-group">
+                    <input type="text" className="form-control item" id="newFNameInput" placeholder="New First Name OR Leave Blank" />
+                </div>
+                <div className="form-group">
+                    <input type="text" className="form-control item" id="newLNameInput" placeholder="New Last Name OR Leave Blank" />
+                </div>
+                <div className="form-group">
+                    <button type="button" className="btn btn-block create-account" onClick={updateEmployeeRecordFunction}>Update Employee Account</button>
+                </div>
+            </form>
+        </div>
     );
 }
-
+ 
 export default UpdateEmployeeRecord;

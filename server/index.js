@@ -163,7 +163,6 @@ app.get('/api/shifts', authenticateAdmin, (req, res) => {
         JOIN Employees ON Employees.id = Associative.employeeID
         JOIN Shifts ON Shifts.id = Associative.shiftID
         LEFT JOIN Teams ON Teams.id = Associative.teamID
-        ORDER BY Shifts.shiftStartTime ASC
     `;
 
     const params = [];
@@ -173,7 +172,9 @@ app.get('/api/shifts', authenticateAdmin, (req, res) => {
         query += ` WHERE Employees.id = ?`;
         params.push(employeeID);
     }
+    query += 'ORDER BY Shifts.shiftStartTime ASC'
 
+    
     db.all(query, params, (err, rows) => {
         if (err) {
             res.status(400).json({ error: err.message });

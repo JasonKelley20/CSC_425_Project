@@ -77,12 +77,12 @@ const RegisterPage = () => {
 
     const contactAPI = (username, password, firstName, lastName) => {
         const role = 'User';
-        return axios.post(API_PATH, {username, password, role, firstName, lastName});
+        return axios.post(API_PATH, {username, password, role, employeeFName: firstName, employeeLName: lastName});
     }
 
     return(
     
-        <section className="vh-100 gradient-custom">
+        <section className="gradient-custom">
         <div className="container-fluid py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">

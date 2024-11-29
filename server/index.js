@@ -115,7 +115,7 @@ app.post('/api/login', (req, res) => {
     const {username, password} = req.body;
 
     if(!username || !password){
-        res.status(400).json({error: "username and password required."});
+        return res.status(400).json({error: "username and password required."});
     }
 
     const query = 'SELECT * FROM Users WHERE username = ?';
@@ -592,7 +592,11 @@ app.post('/api/verifyUser', (req, res) => {
 
 
 // Start the server
-const PORT = 5000;
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+if(process.env.NODE_ENV !== 'test') { //server instance should not be run while testing as it can apparently interfere with testing
+    const PORT = 5000;
+    app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+    });
+}
+
+module.exports = app; //needed for testing with Jest

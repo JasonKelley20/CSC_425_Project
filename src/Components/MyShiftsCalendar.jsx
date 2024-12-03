@@ -83,7 +83,7 @@ const MyShiftsCalendar = () => {
             End Date: ${  ((new Date(extendedProps?.shiftEndTime).getMonth()+1) + "/" + (new Date(extendedProps?.shiftEndTime).getDate())) || 'Unknown'}
             Clock In: ${ clockInTime }
             Clock Out: ${ clockOutTime }
-            Team : ${extendedProps?.teamName || 'N/A'}
+            Team : ${extendedProps?.team || 'N/A'}
             ShiftID : ${extendedProps?.shiftId || 'Unknown'}
             `
         );
